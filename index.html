@@ -1,0 +1,1095 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b1120">
+<title>E.E.S.T. N.º 4 | Gestión del Pañol</title>
+<style>
+:root {
+  color-scheme: dark;
+  --bg: #0b1120;
+  --panel: #111a2e;
+  --panel2: #18243a;
+  --border: #2a3953;
+  --text: #f1f5f9;
+  --muted: #94a3b8;
+  --blue: #3b82f6;
+  --green: #22c55e;
+  --red: #ef4444;
+  --yellow: #f59e0b;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, Arial, sans-serif;
+}
+button, input, select, textarea { font: inherit; }
+button { cursor: pointer; }
+button:disabled { opacity: .5; cursor: not-allowed; }
+header {
+  padding: 18px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+.header-inner {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand-icon { font-size: 32px; }
+h1 { font-size: 19px; margin: 0; }
+.subtitle { font-size: 12px; color: var(--muted); margin-top: 4px; }
+#status {
+  font-size: 12px;
+  color: var(--yellow);
+  padding: 7px 10px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+}
+.layout {
+  max-width: 1200px;
+  padding: 18px;
+  margin: auto;
+}
+nav {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 14px;
+  margin-bottom: 16px;
+}
+nav button {
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  background: var(--panel);
+  color: var(--text);
+  border-radius: 10px;
+  padding: 11px 14px;
+}
+nav button.active, nav button:hover {
+  background: var(--blue);
+  border-color: var(--blue);
+}
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 16px;
+}
+h2 { margin: 0 0 16px; font-size: 21px; }
+h3 { margin: 0 0 12px; font-size: 16px; }
+.muted { color: var(--muted); }
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(150px,1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.stat {
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  padding: 17px;
+  border-radius: 12px;
+}
+.stat-label { color: var(--muted); font-size: 13px; }
+.stat-number { font-size: 29px; font-weight: 750; margin-top: 8px; }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  gap: 12px;
+}
+.field { display: flex; flex-direction: column; gap: 6px; }
+label { color: var(--muted); font-size: 13px; }
+input, select, textarea {
+  width: 100%;
+  min-width: 0;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 11px;
+  border-radius: 9px;
+}
+textarea { min-height: 80px; resize: vertical; }
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+.btn {
+  border: 0;
+  border-radius: 9px;
+  padding: 10px 14px;
+  background: var(--blue);
+  color: white;
+}
+.btn.secondary {
+  background: var(--panel2);
+  border: 1px solid var(--border);
+}
+.btn.success { background: #15803d; }
+.btn.danger { background: #b91c1c; }
+.btn.warning { background: #a16207; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; min-width: 600px; }
+th, td {
+  padding: 11px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+}
+th { color: var(--muted); }
+.badge {
+  display: inline-block;
+  border-radius: 20px;
+  padding: 4px 8px;
+  background: var(--panel2);
+  font-size: 12px;
+}
+.badge.green { color: #86efac; }
+.badge.red { color: #fca5a5; }
+.badge.yellow { color: #fcd34d; }
+.notice {
+  padding: 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  margin-bottom: 12px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.hidden { display: none !important; }
+#login {
+  max-width: 440px;
+  margin: 60px auto;
+  padding: 22px;
+}
+footer {
+  text-align: center;
+  padding: 25px;
+  color: var(--muted);
+  font-size: 12px;
+}
+@media(max-width:600px) {
+  header { padding: 13px; }
+  .layout { padding: 12px; }
+  .panel { padding: 13px; }
+  h1 { font-size: 16px; }
+  .stats { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .stat-number { font-size: 24px; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="brand-icon">🔧</div>
+      <div>
+        <h1>E.E.S.T. N.º 4 — PAÑOL</h1>
+        <div class="subtitle">Sistema de gestión de herramientas</div>
+      </div>
+    </div>
+    <div id="status">⏳ Iniciando sistema...</div>
+  </div>
+</header>
+
+<main class="layout">
+  <section id="login" class="panel hidden">
+    <h2>🔐 Iniciar sesión</h2>
+    <p class="muted">Ingresá con tu cuenta de Google autorizada para acceder al pañol.</p>
+    <button id="loginGoogle" class="btn">Continuar con Google</button>
+    <p id="loginError" class="notice hidden"></p>
+  </section>
+
+  <section id="app" class="hidden">
+    <div class="panel">
+      <div class="header-inner">
+        <div>
+          <strong id="userName">Usuario</strong>
+          <div id="userEmail" class="subtitle"></div>
+        </div>
+        <button id="logout" class="btn secondary">Cerrar sesión</button>
+      </div>
+    </div>
+
+    <nav id="menu">
+      <button class="active" data-page="inicio">🏠 Inicio</button>
+      <button data-page="alumnos">👨‍🎓 Alumnos</button>
+      <button data-page="profesores">👨‍🏫 Profesores</button>
+      <button data-page="herramientas">🔧 Herramientas</button>
+      <button data-page="prestamos">📤 Préstamos</button>
+      <button data-page="devoluciones">📥 Devoluciones</button>
+      <button data-page="historial">📋 Historial</button>
+      <button data-page="configuracion">⚙️ Configuración</button>
+    </nav>
+
+    <section id="page-inicio" class="page">
+      <div class="panel">
+        <h2>🏠 Panel principal</h2>
+        <p class="muted">Resumen general del pañol escolar.</p>
+      </div>
+      <div class="stats">
+        <div class="stat">
+          <div class="stat-label">Alumnos</div>
+          <div class="stat-number" id="statAlumnos">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Profesores</div>
+          <div class="stat-number" id="statProfesores">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Herramientas</div>
+          <div class="stat-number" id="statHerramientas">0</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Préstamos activos</div>
+          <div class="stat-number" id="statPrestamos">0</div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>📌 Actividad reciente</h3>
+        <div id="actividadReciente" class="muted">Todavía no hay movimientos.</div>
+      </div>
+    </section>
+    
+    <section id="page-alumnos" class="page hidden">
+      <div class="panel">
+        <h2>👨‍🎓 Gestión de alumnos</h2>
+        <div class="grid">
+          <div class="field">
+            <label for="alNombre">Nombre y apellido</label>
+            <input id="alNombre" placeholder="Nombre completo">
+          </div>
+          <div class="field">
+            <label for="alAnio">Año</label>
+            <select id="alAnio">
+              <option value="">Seleccionar año</option>
+              <option value="1">1.º año</option>
+              <option value="2">2.º año</option>
+              <option value="3">3.º año</option>
+              <option value="4">4.º año</option>
+              <option value="5">5.º año</option>
+              <option value="6">6.º año</option>
+              <option value="7">7.º año</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="alDivision">División</label>
+            <input id="alDivision" placeholder="Ej. 5">
+          </div>
+          <div class="field">
+            <label for="alComision">Comisión</label>
+            <select id="alComision">
+              <option value="">Seleccionar comisión</option>
+              <option value="1">Comisión 1</option>
+              <option value="2">Comisión 2</option>
+            </select>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn" id="guardarAlumno">➕ Guardar alumno</button>
+          <button class="btn secondary" id="cancelarAlumno">Cancelar edición</button>
+        </div>
+        <p id="mensajeAlumno" class="notice hidden"></p>
+      </div>
+      <div class="panel">
+        <h3>Alumnos registrados</h3>
+        <input id="buscarAlumno" placeholder="🔎 Buscar por nombre, año, división o comisión">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Nombre y apellido</th>
+                <th>Año</th>
+                <th>División</th>
+                <th>Comisión</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tablaAlumnos"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-herramientas" class="page hidden">
+      <div class="panel">
+        <h2>🔧 Inventario de herramientas</h2>
+        <div class="notice">
+          Cada herramienta tiene su propio número de identificación, comenzando desde el 10. Los números identifican herramientas, no alumnos.
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="heCodigo">Número de herramienta</label>
+            <input id="heCodigo" type="number" min="10" step="1" placeholder="Ej. 10">
+          </div>
+          <div class="field">
+            <label for="heNombre">Nombre de la herramienta</label>
+            <input id="heNombre" placeholder="Ej. Destornillador">
+          </div>
+          <div class="field">
+            <label for="heCategoria">Categoría o taller</label>
+            <input id="heCategoria" placeholder="Ej. Electricidad">
+          </div>
+          <div class="field">
+            <label for="heCantidad">Cantidad</label>
+            <input id="heCantidad" type="number" min="1" step="1" value="1">
+          </div>
+          <div class="field">
+            <label for="heEstado">Estado</label>
+            <select id="heEstado">
+              <option value="disponible">Disponible</option>
+              <option value="reparacion">En reparación</option>
+              <option value="baja">Fuera de servicio</option>
+            </select>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn" id="guardarHerramienta">➕ Guardar herramienta</button>
+          <button class="btn secondary" id="cancelarHerramienta">Cancelar edición</button>
+        </div>
+        <p id="mensajeHerramienta" class="notice hidden"></p>
+      </div>
+
+      <div class="panel">
+        <h3>Herramientas registradas</h3>
+        <input id="buscarHerramienta" placeholder="🔎 Buscar por número o nombre">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>N.º</th>
+                <th>Herramienta</th>
+                <th>Categoría</th>
+                <th>Cantidad</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="tablaHerramientas"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-prestamos" class="page hidden">
+      <div class="panel">
+        <h2>📤 Registrar préstamo</h2>
+        <div class="notice">
+          Registrá quién retira la herramienta, qué herramienta se entrega y qué profesor está a cargo. Los préstamos deberán quedar registrados en el historial.
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="prAlumno">Alumno</label>
+            <select id="prAlumno">
+              <option value="">Seleccionar alumno</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="prProfesor">Profesor a cargo</label>
+            <select id="prProfesor">
+              <option value="">Seleccionar profesor</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="prHerramienta">Herramienta</label>
+            <select id="prHerramienta">
+              <option value="">Seleccionar herramienta</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="prCantidad">Cantidad a entregar</label>
+            <input id="prCantidad" type="number" min="1" step="1" value="1">
+          </div>
+          <div class="field">
+            <label for="prFecha">Fecha y hora de retiro</label>
+            <input id="prFecha" type="datetime-local">
+          </div>
+          <div class="field">
+            <label for="prObservacion">Observaciones</label>
+            <textarea id="prObservacion" placeholder="Estado de la herramienta u observaciones"></textarea>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn success" id="registrarPrestamo">📤 Confirmar préstamo</button>
+        </div>
+        <p id="mensajePrestamo" class="notice hidden"></p>
+      </div>
+
+      <div class="panel">
+        <h3>Préstamos activos</h3>
+        <input id="buscarPrestamo" placeholder="🔎 Buscar por alumno o herramienta">
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Alumno</th>
+                <th>Profesor</th>
+                <th>Herramienta</th>
+                <th>Cantidad</th>
+                <th>Fecha de retiro</th>
+                <th>Estado</th>
+              </tr>
+            </thead>
+            <tbody id="tablaPrestamos"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-devoluciones" class="page hidden">
+      <div class="panel">
+        <h2>📥 Registrar devolución</h2>
+        <div class="notice">
+          Seleccioná un préstamo activo. Al confirmar la devolución, el sistema deberá actualizar la disponibilidad y guardar el movimiento en el historial.
+        </div>
+        <div class="grid">
+          <div class="field">
+            <label for="devPrestamo">Préstamo activo</label>
+            <select id="devPrestamo">
+              <option value="">Seleccionar préstamo</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="devFecha">Fecha y hora de devolución</label>
+            <input id="devFecha" type="datetime-local">
+          </div>
+          <div class="field">
+            <label for="devEstado">Estado de la herramienta devuelta</label>
+            <select id="devEstado">
+              <option value="disponible">Devuelta en condiciones</option>
+              <option value="reparacion">Devuelta y necesita reparación</option>
+              <option value="baja">Fuera de servicio</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="devObservacion">Observaciones de devolución</label>
+            <textarea id="devObservacion" placeholder="Daños, piezas faltantes u observaciones"></textarea>
+          </div>
+        </div>
+        <div class="actions">
+          <button class="btn success" id="registrarDevolucion">📥 Confirmar devolución</button>
+        </div>
+        <p id="mensajeDevolucion" class="notice hidden"></p>
+      </div>
+
+      <div class="panel">
+        <h3>Últimas devoluciones</h3>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Alumno</th>
+                <th>Herramienta</th>
+                <th>Cantidad</th>
+                <th>Fecha</th>
+                <th>Estado al devolver</th>
+              </tr>
+            </thead>
+            <tbody id="tablaDevoluciones"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-historial" class="page hidden">
+      <div class="panel">
+        <h2>📋 Historial de movimientos</h2>
+        <p class="muted">Registro de préstamos, devoluciones y otros movimientos del pañol.</p>
+        <input id="buscarHistorial" placeholder="🔎 Buscar por alumno, profesor o herramienta">
+        <div class="actions">
+          <button class="btn secondary" id="exportarHistorial">📄 Exportar historial CSV</button>
+          <button class="btn secondary" id="exportarTodo">💾 Exportar datos del pañol</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Movimiento</th>
+                <th>Alumno</th>
+                <th>Profesor</th>
+                <th>Herramienta</th>
+                <th>Cantidad</th>
+                <th>Observaciones</th>
+              </tr>
+            </thead>
+            <tbody id="tablaHistorial"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="page-configuracion" class="page hidden">
+      <div class="panel">
+        <h2>⚙️ Configuración del pañol</h2>
+        <h3>Estado de conexión</h3>
+        <p id="estadoFirebase" class="notice">Verificando conexión con Firebase...</p>
+        <p id="estadoUsuario" class="muted">Esperando autenticación.</p>
+      </div>
+
+      <div class="panel">
+        <h3>📦 Copia de seguridad</h3>
+        <p class="muted">
+          Exportá una copia de los datos para guardarla de forma segura.
+          La exportación no reemplaza la sincronización con Firebase.
+        </p>
+        <div class="actions">
+          <button class="btn" id="descargarRespaldo">⬇️ Descargar copia JSON</button>
+          <button class="btn secondary" id="seleccionarRespaldo">📂 Restaurar copia JSON</button>
+          <input id="archivoRespaldo" type="file" accept=".json,application/json" class="hidden">
+        </div>
+        <p id="mensajeRespaldo" class="notice hidden"></p>
+      </div>
+
+      <div class="panel">
+        <h3>👤 Cuenta actual</h3>
+        <p id="configNombre" class="muted">Sin iniciar sesión.</p>
+        <p id="configCorreo" class="muted"></p>
+        <p class="notice">
+          Los permisos de acceso y las reglas de Firestore deben configurarse
+          en Firebase Console. No se deben habilitar escrituras públicas.
+        </p>
+      </div>
+    </section>
+  </section>
+  <footer>E.E.S.T. N.º 4 · Sistema de gestión del pañol</footer>
+</main>
+</body>
+</html>
+
+<script type="module">
+import {
+  onAuthStateChanged,
+  signInWithPopup,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+
+import {
+  doc, getDoc, setDoc
+} from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+import { auth, googleProvider, db } from "./firebase-config.js";
+
+const $ = id => document.getElementById(id);
+const datos = {
+  alumnos: [],
+  profesores: [],
+  herramientas: [],
+  prestamos: [],
+  historial: []
+};
+
+const documento = doc(db, "panol", "panol");
+let usuario = null;
+let guardando = false;
+
+function mensaje(id, texto, error = false) {
+  const el = $(id);
+  if (!el) return;
+  el.textContent = texto;
+  el.classList.remove("hidden");
+  el.style.color = error ? "#fca5a5" : "#86efac";
+}
+
+function escapar(valor) {
+  return String(valor ?? "").replace(/[&<>"']/g, c => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;",
+    '"': "&quot;", "'": "&#39;"
+  })[c]);
+}
+
+function fecha() {
+  return new Date().toLocaleString("es-AR");
+}
+
+function idNuevo() {
+  return crypto.randomUUID
+    ? crypto.randomUUID()
+    : Date.now().toString(36) + Math.random().toString(36).slice(2);
+}
+
+function avisar(texto, error = false) {
+  const el = document.createElement("div");
+  el.textContent = texto;
+  el.style.cssText =
+    "position:fixed;bottom:15px;left:5%;width:90%;padding:14px;" +
+    "border-radius:10px;z-index:9999;color:white;background:" +
+    (error ? "#991b1b" : "#166534");
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+
+async function guardarDatos() {
+  if (!usuario) {
+    avisar("Iniciá sesión antes de guardar.", true);
+    return false;
+  }
+  if (guardando) {
+    avisar("Esperá a que termine el guardado.", true);
+    return false;
+  }
+
+  guardando = true;
+  $("status").textContent = "⏳ Guardando en Firebase...";
+
+  try {
+    await setDoc(documento, {
+      ...datos,
+      actualizado: new Date().toISOString(),
+      actualizadoPor: usuario.email || ""
+    });
+    $("status").textContent = "☁️ Firebase conectado";
+    actualizarTodo();
+    return true;
+  } catch (e) {
+    console.error(e);
+    $("status").textContent = "⚠️ Error al guardar";
+    avisar("Firebase rechazó el guardado. Revisá las reglas de Firestore.", true);
+    return false;
+  } finally {
+    guardando = false;
+  }
+}
+
+async function cargarDatos() {
+  $("status").textContent = "⏳ Cargando datos...";
+
+  try {
+    const snap = await getDoc(documento);
+    if (snap.exists()) {
+      const guardados = snap.data();
+      for (const k of Object.keys(datos)) {
+        datos[k] = Array.isArray(guardados[k]) ? guardados[k] : [];
+      }
+    }
+    actualizarTodo();
+    $("status").textContent = "☁️ Datos cargados";
+    $("estadoFirebase").textContent = "Conectado a Firestore.";
+  } catch (e) {
+    console.error(e);
+    $("status").textContent = "⚠️ Error de Firestore";
+    $("estadoFirebase").textContent =
+      "No se pudieron leer los datos. Revisá las reglas de Firestore.";
+    throw e;
+  }
+}
+
+function navegar(pagina) {
+  document.querySelectorAll(".page").forEach(p =>
+    p.classList.toggle("hidden", p.id !== "page-" + pagina)
+  );
+  document.querySelectorAll("#menu button").forEach(b =>
+    b.classList.toggle("active", b.dataset.page === pagina)
+  );
+  if (pagina === "prestamos") llenarSelects();
+  if (pagina === "devoluciones") llenarDevoluciones();
+}
+
+$("menu").addEventListener("click", e => {
+  const boton = e.target.closest("button[data-page]");
+  if (boton) navegar(boton.dataset.page);
+});
+
+$("loginGoogle").addEventListener("click", async () => {
+  try {
+    await signInWithPopup(auth, googleProvider);
+  } catch (e) {
+    console.error("Error al iniciar sesión:", e);
+
+    mensaje(
+      "loginError",
+      "No se pudo iniciar sesión: " + (e.message || e.code),
+      true
+    );
+  }
+});
+
+$("logout").addEventListener("click", () => signOut(auth));
+
+onAuthStateChanged(auth, async user => {
+  usuario = user;
+  $("login").classList.toggle("hidden", !!user);
+  $("app").classList.toggle("hidden", !user);
+
+  if (!user) {
+    $("status").textContent = "🔒 Sesión cerrada";
+    return;
+  }
+
+  $("userName").textContent = user.displayName || "Usuario";
+  $("userEmail").textContent = user.email || "";
+  $("configNombre").textContent = user.displayName || "Usuario";
+  $("configCorreo").textContent = user.email || "";
+  $("estadoUsuario").textContent = "Sesión iniciada: " + (user.email || "");
+
+  try {
+    await cargarDatos();
+    avisar("Sesión iniciada correctamente.");
+  } catch {
+    avisar("Iniciaste sesión, pero no se pudieron cargar los datos.", true);
+  }
+});
+
+function registrarHistorial(tipo, persona, herramienta, cantidad, detalle = "") {
+  datos.historial.unshift({
+    id: idNuevo(), fecha: fecha(), tipo,
+    persona, herramienta, cantidad, detalle
+  });
+}
+
+$("guardarAlumno").addEventListener("click", async () => {
+  const nombre = $("alNombre").value.trim();
+  const anio = $("alAnio").value;
+  const division = $("alDivision").value.trim();
+  const comision = $("alComision").value;
+
+  if (!nombre || !anio || !division || !comision) {
+    return mensaje("mensajeAlumno", "Completá todos los campos.", true);
+  }
+
+  datos.alumnos.push({
+    id: idNuevo(), nombre, anio, division, comision
+  });
+
+  if (await guardarDatos()) {
+    ["alNombre", "alAnio", "alDivision", "alComision"]
+      .forEach(id => $(id).value = "");
+    mensaje("mensajeAlumno", "Alumno guardado correctamente.");
+  } else {
+    datos.alumnos.pop();
+  }
+});
+
+$("guardarProfesor").addEventListener("click", async () => {
+  const nombre = $("prNombre").value.trim();
+  const legajo = $("prLegajo").value.trim();
+  const area = $("prArea").value.trim();
+
+  if (!nombre || !area) {
+    return mensaje("mensajeProfesor", "Ingresá nombre y área.", true);
+  }
+
+  datos.profesores.push({ id: idNuevo(), nombre, legajo, area });
+
+  if (await guardarDatos()) {
+    ["prNombre", "prLegajo", "prArea"].forEach(id => $(id).value = "");
+    mensaje("mensajeProfesor", "Profesor guardado correctamente.");
+  } else {
+    datos.profesores.pop();
+  }
+});
+
+$("guardarHerramienta").addEventListener("click", async () => {
+  const numero = Number($("heCodigo").value);
+  const nombre = $("heNombre").value.trim();
+  const categoria = $("heCategoria").value.trim();
+  const cantidad = Number($("heCantidad").value);
+  const estado = $("heEstado").value;
+
+  if (!Number.isInteger(numero) || numero < 10 || !nombre ||
+      !Number.isInteger(cantidad) || cantidad < 1) {
+    return mensaje("mensajeHerramienta", "Revisá número, nombre y cantidad.", true);
+  }
+  if (datos.herramientas.some(h => Number(h.numero) === numero)) {
+    return mensaje("mensajeHerramienta", "Ese número ya está registrado.", true);
+  }
+
+  datos.herramientas.push({
+    id: idNuevo(), numero, nombre, categoria, cantidad, estado
+  });
+
+  if (await guardarDatos()) {
+    ["heCodigo", "heNombre", "heCategoria"].forEach(id => $(id).value = "");
+    $("heCantidad").value = "1";
+    mensaje("mensajeHerramienta", "Herramienta guardada correctamente.");
+  } else {
+    datos.herramientas.pop();
+  }
+});
+
+function llenarSelects() {
+  $("prAlumno").innerHTML =
+    '<option value="">Seleccionar alumno</option>' +
+    datos.alumnos.map(a =>
+      `<option value="${escapar(a.id)}">${escapar(a.nombre)} — ${escapar(a.anio)}.º ${escapar(a.division)} ${escapar(a.comision)}</option>`
+    ).join("");
+
+  $("prProfesor").innerHTML =
+    '<option value="">Seleccionar profesor</option>' +
+    datos.profesores.map(p =>
+      `<option value="${escapar(p.id)}">${escapar(p.nombre)}</option>`
+    ).join("");
+
+  $("prHerramienta").innerHTML =
+    '<option value="">Seleccionar herramienta</option>' +
+    datos.herramientas.filter(h => h.estado === "disponible")
+      .map(h => `<option value="${escapar(h.id)}">${escapar(h.numero)} — ${escapar(h.nombre)}</option>`)
+      .join("");
+}
+
+$("registrarPrestamo").addEventListener("click", async () => {
+  const alumno = datos.alumnos.find(a => a.id === $("prAlumno").value);
+  const profesor = datos.profesores.find(p => p.id === $("prProfesor").value);
+  const herramienta = datos.herramientas.find(h => h.id === $("prHerramienta").value);
+  const cantidad = Number($("prCantidad").value);
+
+  if (!alumno || !profesor || !herramienta ||
+      !Number.isInteger(cantidad) || cantidad < 1) {
+    return mensaje("mensajePrestamo", "Completá los datos del préstamo.", true);
+  }
+
+  const prestado = datos.prestamos
+    .filter(p => p.herramientaId === herramienta.id && p.estado === "Activo")
+    .reduce((s, p) => s + Number(p.pendiente), 0);
+
+  if (herramienta.estado !== "disponible" ||
+      cantidad > herramienta.cantidad - prestado) {
+    return mensaje("mensajePrestamo", "No hay cantidad disponible suficiente.", true);
+  }
+
+  const prestamo = {
+    id: idNuevo(),
+    alumnoId: alumno.id,
+    alumno: alumno.nombre,
+    profesorId: profesor.id,
+    profesor: profesor.nombre,
+    herramientaId: herramienta.id,
+    herramienta: herramienta.nombre,
+    numeroHerramienta: herramienta.numero,
+    cantidad,
+    pendiente: cantidad,
+    fecha: $("prFecha").value || fecha(),
+    observacion: $("prObservacion").value.trim(),
+    estado: "Activo"
+  };
+
+  datos.prestamos.push(prestamo);
+  registrarHistorial("Préstamo", alumno.nombre, herramienta.nombre,
+    cantidad, "Profesor: " + profesor.nombre);
+
+  if (await guardarDatos()) {
+    $("prCantidad").value = "1";
+    $("prObservacion").value = "";
+    mensaje("mensajePrestamo", "Préstamo registrado correctamente.");
+  } else {
+    datos.prestamos.pop();
+    datos.historial.shift();
+  }
+});
+
+function llenarDevoluciones() {
+  $("devPrestamo").innerHTML =
+    '<option value="">Seleccionar préstamo</option>' +
+    datos.prestamos.filter(p => p.estado === "Activo" && p.pendiente > 0)
+      .map(p => `<option value="${escapar(p.id)}">${escapar(p.alumno)} — ${escapar(p.herramienta)} (pendiente: ${p.pendiente})</option>`)
+      .join("");
+}
+
+$("registrarDevolucion").addEventListener("click", async () => {
+  const p = datos.prestamos.find(p => p.id === $("devPrestamo").value);
+  const cantidad = Number($("devCantidad").value);
+
+  if (!p || !Number.isInteger(cantidad) || cantidad < 1 ||
+      cantidad > p.pendiente) {
+    return mensaje("mensajeDevolucion", "Seleccioná un préstamo y una cantidad válida.", true);
+  }
+
+  const anterior = p.pendiente;
+  const estadoAnterior = p.estado;
+  const h = datos.herramientas.find(h => h.id === p.herramientaId);
+  const estadoHerramientaAnterior = h?.estado;
+
+  p.pendiente -= cantidad;
+  if (p.pendiente === 0) p.estado = "Devuelto";
+  if (h && $("devEstado").value !== "disponible") {
+    h.estado = $("devEstado").value;
+  }
+
+  registrarHistorial("Devolución", p.alumno, p.herramienta, cantidad,
+    $("devObservacion").value.trim());
+
+  if (await guardarDatos()) {
+    $("devObservacion").value = "";
+    mensaje("mensajeDevolucion", "Devolución registrada correctamente.");
+  } else {
+    p.pendiente = anterior;
+    p.estado = estadoAnterior;
+    if (h) h.estado = estadoHerramientaAnterior;
+    datos.historial.shift();
+  }
+});
+
+function actualizarTodo() {
+  dibujarAlumnos();
+  dibujarProfesores();
+  dibujarHerramientas();
+  dibujarPrestamos();
+  dibujarHistorial();
+  llenarSelects();
+  llenarDevoluciones();
+
+  $("statAlumnos").textContent = datos.alumnos.length;
+  $("statProfesores").textContent = datos.profesores.length;
+  $("statHerramientas").textContent = datos.herramientas.length;
+  $("statPrestamos").textContent =
+    datos.prestamos.filter(p => p.estado === "Activo").length;
+
+  $("actividadReciente").textContent = datos.historial.length
+    ? datos.historial.slice(0, 5).map(h =>
+        `${h.fecha} — ${h.tipo}: ${h.persona} — ${h.herramienta}`
+      ).join(" | ")
+    : "Todavía no hay movimientos.";
+}
+
+function dibujarAlumnos() {
+  const q = $("buscarAlumno").value.toLowerCase();
+  $("tablaAlumnos").innerHTML = datos.alumnos
+    .filter(a => `${a.nombre} ${a.anio} ${a.division} ${a.comision}`.toLowerCase().includes(q))
+    .map(a => `<tr>
+      <td>${escapar(a.nombre)}</td><td>${escapar(a.anio)}.º</td>
+      <td>${escapar(a.division)}</td><td>${escapar(a.comision)}</td>
+      <td><button class="btn danger" data-del="alumnos" data-id="${escapar(a.id)}">Eliminar</button></td>
+    </tr>`).join("") || '<tr><td colspan="5">No hay alumnos.</td></tr>';
+}
+
+function dibujarProfesores() {
+  $("tablaProfesores").innerHTML = datos.profesores.map(p =>
+    `<tr><td>${escapar(p.nombre)}</td><td>${escapar(p.legajo)}</td>
+    <td>${escapar(p.area)}</td><td><button class="btn danger" data-del="profesores" data-id="${escapar(p.id)}">Eliminar</button></td></tr>`
+  ).join("") || '<tr><td colspan="4">No hay profesores.</td></tr>';
+}
+
+function dibujarHerramientas() {
+  const q = $("buscarHerramienta").value.toLowerCase();
+  $("tablaHerramientas").innerHTML = datos.herramientas
+    .filter(h => `${h.numero} ${h.nombre} ${h.categoria}`.toLowerCase().includes(q))
+    .map(h => {
+      const prestado = datos.prestamos.filter(p =>
+        p.herramientaId === h.id && p.estado === "Activo"
+      ).reduce((s, p) => s + Number(p.pendiente), 0);
+      return `<tr><td>${escapar(h.numero)}</td><td>${escapar(h.nombre)}</td>
+      <td>${escapar(h.categoria)}</td><td>${h.cantidad - prestado} / ${h.cantidad}</td>
+      <td>${escapar(h.estado)}</td><td><button class="btn danger" data-del="herramientas" data-id="${escapar(h.id)}">Eliminar</button></td></tr>`;
+    }).join("") || '<tr><td colspan="6">No hay herramientas.</td></tr>';
+}
+
+function dibujarPrestamos() {
+  const q = $("buscarPrestamo").value.toLowerCase();
+  $("tablaPrestamos").innerHTML = datos.prestamos
+    .filter(p => p.estado === "Activo")
+    .filter(p => `${p.alumno} ${p.profesor} ${p.herramienta}`.toLowerCase().includes(q))
+    .map(p => `<tr><td>${escapar(p.alumno)}</td><td>${escapar(p.profesor)}</td>
+      <td>${escapar(p.herramienta)}</td><td>${p.cantidad}</td>
+      <td>${escapar(p.fecha)}</td><td>${p.pendiente} pendiente(s)</td></tr>`
+    ).join("") || '<tr><td colspan="6">No hay préstamos activos.</td></tr>';
+}
+
+function dibujarHistorial() {
+  const q = $("buscarHistorial").value.toLowerCase();
+  $("tablaHistorial").innerHTML = datos.historial
+    .filter(h => `${h.tipo} ${h.persona} ${h.herramienta} ${h.detalle}`.toLowerCase().includes(q))
+    .map(h => `<tr><td>${escapar(h.fecha)}</td><td>${escapar(h.tipo)}</td>
+      <td>${escapar(h.persona)}</td><td>${escapar(h.herramienta)}</td>
+      <td>${escapar(h.cantidad)}</td><td>${escapar(h.detalle)}</td></tr>`
+    ).join("") || '<tr><td colspan="7">No hay movimientos.</td></tr>';
+}
+
+document.addEventListener("click", async e => {
+  const b = e.target.closest("[data-del]");
+  if (!b) return;
+  const { del, id } = b.dataset;
+  if (!confirm("¿Seguro que querés eliminar este registro?")) return;
+
+  if (del === "herramientas" && datos.prestamos.some(p =>
+    p.herramientaId === id && p.estado === "Activo")) {
+    return avisar("No se puede eliminar una herramienta prestada.", true);
+  }
+
+  const anterior = [...datos[del]];
+  datos[del] = datos[del].filter(x => x.id !== id);
+  if (!await guardarDatos()) datos[del] = anterior;
+});
+
+["buscarAlumno", "buscarHerramienta", "buscarPrestamo", "buscarHistorial"]
+  .forEach(id => $(id).addEventListener("input", actualizarTodo));
+
+$("exportarHistorial").addEventListener("click", () => {
+  descargar("historial.csv", "text/csv;charset=utf-8",
+    "Fecha;Movimiento;Persona;Herramienta;Cantidad;Detalle\n" +
+    datos.historial.map(h =>
+      [h.fecha, h.tipo, h.persona, h.herramienta, h.cantidad, h.detalle]
+        .map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(";")
+    ).join("\n"));
+});
+
+$("exportarTodo").addEventListener("click", () =>
+  descargar("panol-datos.json", "application/json",
+    JSON.stringify(datos, null, 2)));
+
+$("descargarRespaldo").addEventListener("click", () =>
+  descargar("panol-respaldo.json", "application/json",
+    JSON.stringify(datos, null, 2)));
+
+$("seleccionarRespaldo").addEventListener("click", () => $("archivoRespaldo").click());
+
+$("archivoRespaldo").addEventListener("change", async e => {
+  const file = e.target.files[0];
+  if (!file) return;
+  try {
+    const copia = JSON.parse(await file.text());
+    for (const k of Object.keys(datos)) {
+      if (!Array.isArray(copia[k])) throw new Error("Archivo de respaldo inválido.");
+    }
+    if (!confirm("Esto reemplazará los datos actuales. ¿Continuar?")) return;
+    const anterior = structuredClone(datos);
+    for (const k of Object.keys(datos)) datos[k] = copia[k];
+    if (!await guardarDatos()) {
+      for (const k of Object.keys(datos)) datos[k] = anterior[k];
+    }
+  } catch (e) {
+    avisar("No se pudo restaurar el archivo: " + e.message, true);
+  }
+  e.target.value = "";
+});
+
+function descargar(nombre, tipo, contenido) {
+  const url = URL.createObjectURL(new Blob(["\uFEFF", contenido], { type: tipo }));
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = nombre;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+$("cancelarAlumno").addEventListener("click", () => {
+  ["alNombre", "alAnio", "alDivision", "alComision"].forEach(id => $(id).value = "");
+});
+$("cancelarProfesor").addEventListener("click", () => {
+  ["prNombre", "prLegajo", "prArea"].forEach(id => $(id).value = "");
+});
+$("cancelarHerramienta").addEventListener("click", () => {
+  ["heCodigo", "heNombre", "heCategoria"].forEach(id => $(id).value = "");
+  $("heCantidad").value = "1";
+});
+
+$("prFecha").value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+$("devFecha").value = new Date(Date.now() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+</script>
+</body>
+</html>
+
